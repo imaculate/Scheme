@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functional Programming Assignment --- Fixing The World    ;;
 ;; 25/3/15                                                   ;;
-;; <Add your name and student number here>   
+;; <Imaculate Mosha , MSHIMA001>   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 

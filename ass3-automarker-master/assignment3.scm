@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functional Programming Assignment --- Fixing The World    ;;
 ;; 25/3/15                                                   ;;
-;; <Add your name and student number here>   
+;; <Imaculate Mosha , MSHIMA001>   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -115,11 +115,12 @@
                 orientation
                 (if(= orientation 4)
                     1
+                    
                     (+ orientation 1)
                 )
             )
         ]
-        [(= axis 1)
+        [(= axis 1) 
             (if (or (= orientation 1) (= orientation 3))
                 orientation
                 (cond
@@ -141,6 +142,22 @@
                 )
             )
         ]
+        
+        [(= axis 3)
+            
+            (recalculateOrientation (recalculateOrientation (recalculateOrientation orientation 0) 0) 0)
+           
+        ]
+        
+        [(= axis 4)
+             (recalculateOrientation (recalculateOrientation (recalculateOrientation orientation 1) 1) 1)
+         ]
+        [(= axis 5)
+             (recalculateOrientation (recalculateOrientation (recalculateOrientation orientation 2) 2) 2)
+         ]
+
+
+
     )
 )
 ;; ;TESTS
@@ -153,19 +170,103 @@
 
 ;rotations are performed using the left hand rule
 ;rotates left 4 cubes along x axis
+
+( define original  '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))
 (define (rotateX ispositive state)
-	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
+	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
+ 
+   
+   (if (eqv? ispositive #t) 
+        (list (list (list (car (list-ref state 4))  (recalculateOrientation  (car (cdr (list-ref state 4))) 0))
+                          (list-ref state 1)
+                          (list (car (list-ref state 0))  (recalculateOrientation   (car  (cdr (list-ref state 0))) 0))
+                          (list-ref state 3)
+                          (list (car (list-ref state 6))  (recalculateOrientation   (car (cdr (list-ref state 6))) 0))
+                          (list-ref state 5)
+                         (list (car (list-ref state 2))  (recalculateOrientation   (car (cdr (list-ref state 2))) 0))
+                          (list-ref state 7)
+                          )(list "x"))
+                          
+                    (list (list (list (car (list-ref state 2))  (recalculateOrientation   (car (cdr (list-ref state 2))) 3))
+                          (list-ref state 1)
+                          (list (car (list-ref state 6))  (recalculateOrientation   (car (cdr (list-ref state 6))) 3))
+                          (list-ref state 3)
+                          (list (car (list-ref state 0))  (recalculateOrientation   (car (cdr (list-ref state 0))) 3))
+                          (list-ref state 5)
+                         (list (car (list-ref state 4))  (recalculateOrientation   (car (cdr (list-ref state 4))) 3))
+                          (list-ref state 7)
+                          )(list "X"))
+   
+
+	
+	
 )
+)
+
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
-   	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
+   	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
+         (if (eqv? ispositive #t) 
+                           (list (list (list-ref state 0)
+                          (list-ref state 1)
+                          (list-ref state 2)
+                          (list-ref state 3)
+                          (list (car (list-ref state 5))  (recalculateOrientation   (car (cdr (list-ref state 5))) 1))
+                          (list (car (list-ref state 7))  (recalculateOrientation   (car (cdr (list-ref state 7))) 1))
+                         (list (car (list-ref state 4))  (recalculateOrientation   (car (cdr (list-ref state 4))) 1))
+                          (list (car (list-ref state 6))  (recalculateOrientation   (car (cdr (list-ref state 6))) 1))
+                          )(list "y"))
+                          
+                    (list (list (list-ref state 0)
+                          (list-ref state 1)
+                          (list-ref state 2)
+                          (list-ref state 3)
+                          (list (car (list-ref state 6))  (recalculateOrientation   (car (cdr (list-ref state 6))) 4))
+                          (list (car (list-ref state 4))  (recalculateOrientation   (car (cdr (list-ref state 4))) 4))
+                         (list (car (list-ref state 7))  (recalculateOrientation   (car (cdr (list-ref state 7))) 4))
+                          (list (car (list-ref state 5))  (recalculateOrientation   (car (cdr (list-ref state 5))) 4))
+                          )(list "Y"))
+   
+
+	
+	)
 )
+	;if positive 5-4-6-7-5, else, 5-7-6-4-5,
+	; orientation for X = xxx;
+
 
 ;rotates back 4 cubes along z axis
 (define (rotateZ ispositive state)
-	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
+	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
+         (if (eqv? ispositive #t) 
+                          (list (list (list (car (list-ref state 1))  (recalculateOrientation   (car (cdr (list-ref state 1))) 2))
+                           (list (car (list-ref state 5))  (recalculateOrientation   (car (cdr (list-ref state 5))) 2))                         
+                          (list-ref state 2)
+                          (list-ref state 3)
+                          (list (car (list-ref state 0))  (recalculateOrientation   (car (cdr (list-ref state 0))) 2))
+                          (list (car (list-ref state 4))  (recalculateOrientation   (car (cdr (list-ref state 4))) 2))
+                          (list-ref state 6)
+                           (list-ref state 7)
+                          )(list "z"))
+                          
+                   (list (list (list (car (list-ref state 4))  (recalculateOrientation   (car (cdr (list-ref state 4))) 5))
+                           (list (car (list-ref state 0))  (recalculateOrientation   (car (cdr (list-ref state 0))) 5))                         
+                          (list-ref state 2)
+                          (list-ref state 3)
+                          (list (car (list-ref state 5))  (recalculateOrientation   (car (cdr (list-ref state 5))) 5))
+                          (list (car (list-ref state 1))  (recalculateOrientation   (car (cdr (list-ref state 1))) 5))
+                          (list-ref state 6)
+                           (list-ref state 7)
+                          )(list "Z"))
+   
+
+	
+	
 )
+	
+)
+      
 
 ;; ;helper for rotate function
 (define (rotateHelper char state)
@@ -187,7 +288,7 @@
     )
 )
 ;; ;TESTS
-;; ; (print (equal? (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))) "\n")
+;; ;(print (equal? (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))) "\n")
 ;; ; (print (equal? (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateZ #t (car (rotateY #t (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
 ;; ; (print (equal? (rotate "xXx" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #t (car (rotateX #f (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
 ;; ; (print (equal? (rotate "yXz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateZ #t (car (rotateX #f (car (rotateY #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
@@ -199,15 +300,18 @@
 (define (generateSuccessorStates state prevMoves) 
     (list
         (list
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            (rotate "x" state)
+            (rotate "X" state)
+            (rotate "y" state)
+            (rotate "Y" state)
+            (rotate "z" state)
+            (rotate "Z" state)
+            
+         )
+        (list (append  prevMoves (list "x")) (append  prevMoves (list "X")) (append  prevMoves (list "y")) (append  prevMoves (list "Y")) (append  prevMoves (list "z")) (append  prevMoves (list "Z")))
         )
-        '(("x") ("X") ("y") ("Y") ("z") ("Z"))
-    ) ;;; *TODO* ;;; 
+        
+    
 )
 
 ;; ;TESTS
@@ -230,19 +334,73 @@
 ;-----------------------------QUESTION 2.1--------------------------
 
 ;finds all the states at a specific depth
+(define (loopresult i res-length res origin  )
+         (if (= i res-length)
+              res
+             (let ((gen (generateSuccessorStates (list-ref (car origin) i) (if (null? (car (cdr origin))) '() (list-ref (car (cdr origin)) i  )
+            )  
+             ))) 
+             (loopresult  (+ i 1) res-length  
+             (list (append (car res) (car gen) ) (append (if (null? (cdr res)) '() (car (cdr res))) (car (cdr gen)) )) 
+              origin)   
+ )
+ )
+ )        
+(define (genHelper d result)
+   (if(= d 0)
+      result
+      (genHelper (- d 1)  (loopresult 0 (length (car result))  (list '() '())  result ))
+    )
+ )
 (define (genStates n state moves)
-    '((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) ((x) (X) (y) (Y) (z) (Z))) ;;; *TODO* ;;;
+      (genHelper  n (list (list state) (list (list)))  )
+     
+            
+      
+      
+    ;((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) ((x) (X) (y) (Y) (z) (Z))) ;;; *TODO* ;;;
+	
 )
+
 ;----------------------------------------------------------
 
 
 ;---------------------------QUESTION 3.1-----------------------
 ;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
-(define (solveCube solved initial n)
-    '("Z", "Y", "X") ;;; *TODO* ;;;
+
+(define (findx x ls i)
+       ( if (or (= i (length ls)) (equal? (list-ref ls i) x) )
+         i
+         (findx x ls (+ 1 i))
+        )   
+      
 )
+(define (loopsolved j  gen)
+         (if (or (= j (length (car gen))) (not (=  (length solvedStates)(findx (list-ref (car gen) j) solvedStates 0))) )
+               j
+               (loopsolved (+ j 1) gen)
+           )
+)
+            
+(define (solveCube solved initial n)
+   (let ((gen (genStates n initial '())))
+        (let ((index (loopsolved 0  gen)))
+
+      (if (< index (length (car gen)))
+            (list-ref (car (cdr gen)) index) 
+            (solveCube solvedStates initial  (+ n 1))
+       ))
+       )  
+          
+    ;'("Z", "Y", "X") ;;; *TODO* ;;;
+)
+;assert n<6
+(define test (rotate "xyz" original))
+
+
 ;---------------------------------------------------------------------
 ;TESTS
 ; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;---------------------------------------------------------------------
+

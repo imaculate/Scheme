@@ -353,7 +353,7 @@
     )
  )
 (define (genStates n state moves)
-      (genHelper  n (list (list state) (list))  )
+      (genHelper  n (list (list state) (list (list)))  )
      
             
       

@@ -142,7 +142,7 @@
                 )
             )
         ]
-        
+        ; negative rotation is equivalent to positive rotation three times.
         [(= axis 3)
             
             (recalculateOrientation (recalculateOrientation (recalculateOrientation orientation 0) 0) 0)
@@ -171,7 +171,7 @@
 ;rotations are performed using the left hand rule
 ;rotates left 4 cubes along x axis
 
-( define original  '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))
+( define original  '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))); defined for unit tests
 (define (rotateX ispositive state)
 	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
  
@@ -203,6 +203,9 @@
 )
 )
 
+;;(print (equal? (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ("x")) ) "\n")
+;;(print (equal? (rotateX #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ("X")) ) "\n")
+
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
@@ -232,8 +235,9 @@
 	
 	)
 )
-	;if positive 5-4-6-7-5, else, 5-7-6-4-5,
-	; orientation for X = xxx;
+	
+;;(print (equal? (rotateY #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ("y")) ) "\n")
+;;(print (equal? (rotateY #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ("Y")) ) "\n")
 
 
 ;rotates back 4 cubes along z axis
@@ -266,6 +270,11 @@
 )
 	
 )
+
+;;(print (equal? (rotateZ #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ("z")) ) "\n")
+;;(print (equal? (rotateZ #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))  '(((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3)) ("Z")) ) "\n")
+
+
       
 
 ;; ;helper for rotate function
@@ -334,6 +343,7 @@
 ;-----------------------------QUESTION 2.1--------------------------
 
 ;finds all the states at a specific depth
+; helper method that uses tail recursion to loop through a list of states and generate sucessor states.
 (define (loopresult i res-length res origin  )
          (if (= i res-length)
               res
@@ -345,22 +355,40 @@
               origin)   
  )
  )
- )        
+ )
+ ;;TESTS
+;; (print (equal? (loopresult 0 1 (list '() '()) (list (list original) (list (list)))) '((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) (("x") ("X") ("y") ("Y") ("z") ("Z"))) 
+ ;;  ) "\n") 
+         
 (define (genHelper d result)
    (if(= d 0)
       result
       (genHelper (- d 1)  (loopresult 0 (length (car result))  (list '() '())  result ))
     )
  )
+ 
+ ;;TESTS
+  ;;(print (equal? (genHelper 1 (list (list original) (list (list))) ) (loopresult 0 1 (list '() '()) (list (list original) (list (list)))) 
+ ;;)"\n")
+ 
+
+ 
+ ;; helper to gens states that tail recursively generates sucesssor states to depth d.
 (define (genStates n state moves)
       (genHelper  n (list (list state) (list (list)))  )
      
             
-      
+       
       
     ;((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) ((x) (X) (y) (Y) (z) (Z))) ;;; *TODO* ;;;
 	
 )
+   ;; TESTS
+ ;;(print (equal? (genStates 1 original '()) (genHelper 1 (list (list original) (list (list))) )  
+ ;;) "\n")
+;;(print (equal? (genStates 2 original '()) (genHelper 2 (list (list original) (list (list))) )  
+ ;;) "\n")
+ 
 
 ;----------------------------------------------------------
 
@@ -368,20 +396,33 @@
 ;---------------------------QUESTION 3.1-----------------------
 ;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
 
+;; uses tail recursion to find a state x in the list ls of solvedStates, if found returns the 
+;;index otherwise return the length of ls to indicate not found.
 (define (findx x ls i)
        ( if (or (= i (length ls)) (equal? (list-ref ls i) x) )
          i
          (findx x ls (+ 1 i))
         )   
       
-)
+) 
+
+;;TESTS
+;;(print (equal? (findx 2 (list 1 2 3) 0) 1) "\n")
+;; (print (equal? (findx 4 (list 1 2 3) 0) 3) "\n")
+
+;; function that takes in a list of generated states and returns the index of the first solved state found.
 (define (loopsolved j  gen)
          (if (or (= j (length (car gen))) (not (=  (length solvedStates)(findx (list-ref (car gen) j) solvedStates 0))) )
                j
                (loopsolved (+ j 1) gen)
            )
 )
-            
+
+;; TESTS
+
+;;(print (equal? (loopsolved 0 (genStates 0 original '()))  0) "\n") 
+;;(print (equal? (loopsolved 0 (genStates 1 original '()))  6) "\n") ;; none of the generated states is a solved state.
+   
 (define (solveCube solved initial n)
    (let ((gen (genStates n initial '())))
         (let ((index (loopsolved 0  gen)))
@@ -394,13 +435,13 @@
           
     ;'("Z", "Y", "X") ;;; *TODO* ;;;
 )
-;assert n<6
-(define test (rotate "xyz" original))
+
+
 
 
 ;---------------------------------------------------------------------
 ;TESTS
-; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;(print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;---------------------------------------------------------------------
 
